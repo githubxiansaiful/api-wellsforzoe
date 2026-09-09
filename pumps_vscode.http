@@ -1,0 +1,97 @@
+# Fetch pump records — VS Code REST Client first install to run this file (humao.rest-client)
+#
+# Setup: install the "REST Client" extension, then set @apiKey below to a
+#        service API key with media-list permission.
+#
+# Endpoint: AWS API Gateway (staging):
+#           https://xy8k2fbn87.execute-api.eu-west-1.amazonaws.com/staging/graphql
+#
+# Explore: open that URL in a browser for GraphiQL, an interactive IDE to browse
+#          the schema (Docs tab) and test queries. Add `api-key` under the
+#          Headers tab to run authenticated queries.
+#
+# Paging: request with `limit` + `skip` (180, then skip 180, 360, ...).
+#         Keep going until `forms` returns fewer than `limit` rows.
+#
+# Photos: each `referencedPhotos` entry has a `url(width:)` field returning the
+#         ready-to-use image URL (defaults to 1920). Supported widths:
+#         1920 1280 1080 720 480 320 180 120 50 20. Alias can be anything for
+#         different sizes, e.g. `thumb: url(width: 180) full: url(width: 1920)`.
+#         (Only populated when `includePhotos: true`.)
+
+@baseUrl = https://xy8k2fbn87.execute-api.eu-west-1.amazonaws.com/staging/graphql
+@apiKey = Uncover-Broker-Parish6-Varying-Satirical
+
+### Slim list — minimal fields for a listing view
+POST {{baseUrl}}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+api-key: {{apiKey}}
+
+query listPumps($limit: Int!, $skip: Int!) {
+  forms(limit: $limit, skip: $skip, definitionIdsIn: ["wfz-pump-installation-or-maintenance"], includePhotos: true) {
+    id
+    createdTime
+    data {
+      ... on WfzPumpInstallationOrMaintenanceForm {
+        titleOfPump
+        referencedPhotos {
+          thumb: url(width: 180)
+        }
+      }
+    }
+  }
+}
+
+{
+  "limit": 180,
+  "skip": 0
+}
+
+### Single pump by id — all fields for summary
+POST {{baseUrl}}
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+api-key: {{apiKey}}
+
+query getPump($id: Id!) {
+  forms(ids: [$id], includePhotos: true) {
+    id
+    createdTime
+    data {
+      ... on WfzPumpInstallationOrMaintenanceForm {
+        referencedPhotos {
+          thumb: url(width: 180)
+          full: url(width: 1920)
+        }
+        titleOfPump
+        idDetails {
+          latitude
+          longitude
+        }
+        pumpLocation {
+          village
+          area
+          country
+        }
+        photosOfInstallation {
+          donorOrPumpDedication {
+            title
+            value
+          }
+        }
+        socialInformation {
+          noOfPeopleServed
+        }
+        commentAndStory {
+          commentAndStoryOfInstallationOrMaintenance
+        }
+      }
+    }
+  }
+}
+
+{
+  "id": "REPLACE_WITH_PUMP_FORM_ID"
+}
+

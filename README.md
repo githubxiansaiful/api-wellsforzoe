@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Wells for Zoë — Water Pump Explorer
+
+A modern Next.js web application built to explore water pump installations, community impact, GPS coordinates, and field photography from the **Wells for Zoë** initiative in Malawi, powered by their GraphQL API.
+
+## Features
+
+- **GraphQL Integration**: Connects to the AWS GraphQL API endpoint configured in [pumps_vscode.http](file:///D:/NextJs%20Projects/test/pumps_vscode.http).
+- **Interactive Directory**:
+  - Real-time search across titles, villages, areas, countries, and IDs.
+  - Filter by administrative area / district.
+  - Sort by newest, oldest, or highest number of people served.
+  - Toggle between **Card Grid view** and **Table view**.
+- **Impact Metrics**: Aggregates total pumps loaded, people served, and unique communities in real-time.
+- **Photo Galleries**: Displays responsive thumbnail previews and full-resolution installation photographs.
+- **Detailed Pump View (`/pumps/[id]` and modal)**:
+  - GPS latitude & longitude coordinates with direct links to Google Maps.
+  - Beneficiary count and installation timestamps.
+  - Donor dedication records.
+  - Community story and field notes.
+  - Interactive raw JSON viewer for API exploration and developer inspection.
 
 ## Getting Started
 
-First, run the development server:
+### 1. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Build for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run start
+```
 
-## Learn More
+## Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Configured in [.env.local](file:///D:/NextJs%20Projects/test/.env.local):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `NEXT_PUBLIC_PUMP_API_URL`: The GraphQL endpoint (`https://xy8k2fbn87.execute-api.eu-west-1.amazonaws.com/staging/graphql`)
+- `PUMP_API_KEY`: The API authorization key
